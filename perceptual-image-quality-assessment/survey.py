@@ -9,17 +9,16 @@ import os
 
 
 def main():
-    original_image = cv2.imread(
-        os.path.join(sys.path[0], 'image.png'))
-    original_image_grayscale = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
+    original_image = cv2.imread(os.path.join(
+        sys.path[0], 'image-grayscale.png'))
 
-    image_variants = [(quality, jpegDecompress(jpegCompress(original_image_grayscale, quality)))
+    image_variants = [(quality, jpegDecompress(jpegCompress(original_image, quality)))
                       for quality in (5, 15, 25, 35, 45, 55, 65, 75, 85, 95)]
     random.shuffle(image_variants)
 
     root = Tk()
 
-    image = ImageTk.PhotoImage(Image.fromarray(original_image_grayscale))
+    image = ImageTk.PhotoImage(Image.fromarray(original_image))
     image_panel = Label(image=image)
     image_panel.pack(side="bottom")
 
