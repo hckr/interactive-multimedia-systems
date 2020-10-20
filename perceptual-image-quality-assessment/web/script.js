@@ -49,7 +49,6 @@ async function showNextVariant() {
   rankButtonsEl.querySelectorAll("button").forEach((button, key) => {
     button.onclick = () => {
       results.push([quality, key + 1]);
-      console.log(JSON.stringify(results));
       showNextVariant();
     };
   });
