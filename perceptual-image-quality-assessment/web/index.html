@@ -4,10 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Survey: perceptual image quality assessment</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="rankButtons">
+    <div id="description">
+      <p>
+        You will be presented with 10 variants of the original photo visible
+        below.
+      </p>
+      <p>
+        Please rate each photo from the worst (1) to the best (5) perceived
+        quality.
+      </p>
+
+      <button id="call-to-action">OK, let's start!</button>
+    </div>
+
+    <div id="rank-buttons" class="hidden">
       <button>1</button>
       <button>2</button>
       <button>3</button>
@@ -16,6 +33,15 @@
     </div>
 
     <img id="image" src="../image-grayscale.png" />
+
+
+    <div id="end-screen" class="hidden">
+      <p>
+        Thank you. Please copy the result below:
+      </p>
+
+      <textarea id="result"></textarea>
+    </div>
 
     <script src="script.js"></script>
   </body>

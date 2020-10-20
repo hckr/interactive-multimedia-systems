@@ -1,18 +1,39 @@
 body {
-    width: 675px;
+  font-size: 18px;
+  text-align: center;
+  font-family: "Commissioner", sans-serif;
+  width: 675px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+p {
+  margin: 10px 0;
+}
+
+#image {
     max-width: 100%;
-    margin: 0 auto;
 }
 
-#rankButtons {
-    display: flex;
+#rank-buttons {
+  display: flex;
 }
 
-#rankButtons button {
-    flex-grow: 1;
-    background-color: aqua;
-    margin: 10px;
-    padding: 5px;
-    cursor: pointer;
-    font-size: 18px;
+.hidden {
+  display: none !important;
+}
+
+button {
+  flex-grow: 1;
+  font-family: "Commissioner", sans-serif;
+  background-color: aqua;
+  margin: 10px;
+  padding: 5px 20px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+#result {
+    width: 300px;
+    height: 80px;
 }
