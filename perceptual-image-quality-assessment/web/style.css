@@ -11,8 +11,9 @@ p {
   margin: 10px 0;
 }
 
-#image {
+.image-container {
     max-width: 100%;
+    overflow-y: auto;
 }
 
 #rank-buttons {
