@@ -32,26 +32,34 @@ const imageVariants = imageVariantsGenerator(
 const results = [];
 
 async function showNextVariant() {
-  const {
-    value,
-    done,
-  } = await imageVariants.next();
+  const { value, done } = await imageVariants.next();
 
   if (done) {
     showEndScreen();
     return;
   }
 
-  const { quality, dataUrl } = value;
+  imageEl.style.visibility = "hidden";
 
-  imageEl.src = dataUrl;
+  setTimeout(() => {
+    imageEl.style.visibility = "visible";
 
-  rankButtonsEl.querySelectorAll("button").forEach((button, key) => {
-    button.onclick = () => {
-      results.push([quality, key + 1]);
-      showNextVariant();
-    };
-  });
+    const { quality, dataUrl } = value;
+
+    imageEl.src = dataUrl;
+
+    rankButtonsEl.querySelectorAll("button").forEach((button, key) => {
+      button.onclick = () => {
+        rankButtonsEl.querySelectorAll("button").forEach((button) => {
+          button.onclick = undefined;
+        });
+
+        results.push([quality, key + 1]);
+
+        showNextVariant();
+      };
+    });
+  }, 50);
 }
 
 function showEndScreen() {
@@ -61,9 +69,9 @@ function showEndScreen() {
   resultTextarea.value = JSON.stringify(results);
 }
 
-resultTextarea.onclick = function() {
+resultTextarea.onclick = function () {
   this.select();
-}
+};
 
 async function* imageVariantsGenerator(origImageSrc, qualityVariants) {
   const dataUrls = shuffle(
