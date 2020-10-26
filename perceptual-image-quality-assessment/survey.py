@@ -6,14 +6,16 @@ from PIL import ImageTk
 import cv2
 import random
 import os
+import json
+
+from imagevariants import generate_jpeg_variants
 
 
 def main():
     original_image = cv2.imread(os.path.join(
-        sys.path[0], 'image-grayscale.png'))
+        sys.path[0], 'image-grayscale.png'), cv2.IMREAD_UNCHANGED)
 
-    image_variants = [(quality, jpegDecompress(jpegCompress(original_image, quality)))
-                      for quality in (5, 15, 25, 35, 45, 55, 65, 75, 85, 95)]
+    image_variants = generate_jpeg_variants(original_image)
     random.shuffle(image_variants)
 
     root = Tk()
@@ -78,17 +80,7 @@ def main():
     start_button_frame.pack(side="top")
 
     root.mainloop()
-    print(ranks)
-
-
-def jpegCompress(img, quality):
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), quality]
-    _, encimg = cv2.imencode('.jpg', img, encode_param)
-    return encimg
-
-
-def jpegDecompress(encimg):
-    return cv2.imdecode(encimg, -1)
+    print(json.dumps(ranks))
 
 
 if __name__ == '__main__':
