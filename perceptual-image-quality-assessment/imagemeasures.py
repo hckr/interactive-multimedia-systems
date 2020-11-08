@@ -18,8 +18,8 @@ def peak_signal_to_noise_ratio(original_grayscale_image, grayscale_image):
     ))
 
 
-def root_mean_square_deviation(original_grayscale_image, grayscale_image):
-    return np.sqrt(mean_squared_error(original_grayscale_image, grayscale_image))
+def normalized_root_mean_square_deviation(original_grayscale_image, grayscale_image):
+    return np.sqrt(mean_squared_error(original_grayscale_image, grayscale_image)) / 255
 
 
 def main():
@@ -27,18 +27,18 @@ def main():
         sys.path[0], 'image-grayscale.png'), cv2.IMREAD_UNCHANGED)
     image_variants = generate_jpeg_variants(original_image)
 
-    mses = [(quality, root_mean_square_deviation(original_image, image))
+    mses = [(quality, normalized_root_mean_square_deviation(original_image, image))
             for (quality, image) in image_variants]
 
     pstnrs = [(quality, peak_signal_to_noise_ratio(original_image, image))
               for (quality, image) in image_variants]
 
-    rmsds = [(quality, root_mean_square_deviation(original_image, image))
+    nrmsds = [(quality, normalized_root_mean_square_deviation(original_image, image))
              for (quality, image) in image_variants]
 
     print(mses)
     print(pstnrs)
-    print(rmsds)
+    print(nrmsds)
 
 
 if __name__ == "__main__":
