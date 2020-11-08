@@ -1,7 +1,8 @@
 import os
 import json
 import sys
-import math
+import operator
+from functools import reduce
 
 import cv2
 import matplotlib.pyplot as plt
@@ -20,7 +21,7 @@ from imagemeasures import mean_squared_error, normalized_root_mean_square_deviat
 def main():
     labels, assessments = load_results('survey-results.json')
     # plot_raw_results(labels, assessments)
-    moses = list(mean_opinion_scores(assessments))
+    mean_moses = list(mean_opinion_scores(assessments))
 
     original_image = cv2.imread(os.path.join(
         sys.path[0], 'image-grayscale.png'), cv2.IMREAD_UNCHANGED)
@@ -69,15 +70,15 @@ def main():
     plt.figure()
 
     regr = linear_model.LinearRegression()
-    regr.fit(np.array(labels).reshape(-1, 1), moses)
+    regr.fit(np.array(labels).reshape(-1, 1), mean_moses)
     x_pred = np.linspace(0, 1, 101)
     regr_pred = regr.predict(x_pred.reshape(-1, 1))
 
     plt.plot(x_pred, regr_pred, '-c',
              label=f'Linear regression model: {round(regr.coef_[0], 2)}x + {round(regr.intercept_, 2)}')
-    plt.plot(labels, moses, '*m')
+    plt.plot(labels, mean_moses, '*m')
 
-    for xy in zip(labels, moses):
+    for xy in zip(labels, mean_moses):
         plt.annotate(second(xy), xy=(first(xy) - 0.02,
                                      second(xy) + 0.1), textcoords='data')
 
@@ -88,25 +89,24 @@ def main():
     plt.grid()
 
     plt.figure()
-    plot_correlation(moses, mses, 'MOS-es and mean squared errors correlation')
+    plot_correlation(mean_moses, mses, '`Mean MOS-es and mean squared errors correlation')
 
     plt.figure()
     plot_correlation(
-        moses, pstnrs, 'MOS-es and peak signal to noise ratios correlation')
+        mean_moses, pstnrs, 'Mean MOSes and peak signal to noise ratios correlation')
 
     plt.figure()
     plot_correlation(
-        moses, nrmsds, 'MOS-es and normalized root mean square deviations correlation')
-
-
-    plt.figure()
-    plot_linreg(moses, mses, 'MOS', 'mean squared error')
+        mean_moses, nrmsds, 'Mean MOSes and normalized root mean square deviations correlation')
 
     plt.figure()
-    plot_linreg(moses, pstnrs, 'MOS', 'peak signal to noise ratio')
+    plot_linreg(reduce(operator.concat, assessments), list(mses) * len(assessments), 'MOS', 'mean squared error')
 
     plt.figure()
-    plot_linreg(moses, nrmsds, 'MOS', 'normalized root mean square deviation')
+    plot_linreg(reduce(operator.concat, assessments), list(pstnrs) * len(assessments), 'MOS', 'peak signal to noise ratio')
+
+    plt.figure()
+    plot_linreg(reduce(operator.concat, assessments), list(nrmsds) * len(assessments), 'MOS', 'normalized root mean square deviation')
 
     plt.show()
 

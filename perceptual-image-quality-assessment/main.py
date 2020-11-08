@@ -7,7 +7,7 @@ assert __name__ == "__main__"
 
 if len(sys.argv) == 2:
     if sys.argv[1] == 'survey':
-        print("Running survey. Go back here to copy results afterwards!")
+        print('Running survey. Go back here to copy results afterwards!')
         survey.main()
         exit()
     elif sys.argv[1] == 'results':
