@@ -1,6 +1,7 @@
 import audioop
 import numpy as np
 from scipy.ndimage import interpolation
+from loader import BASE_SAMPLING_RATE
 
 QUANTIZATION_VARIANTS = [8, 4, 2]
 SAMPLING_RATE_VARIANTS = [22000, 11000, 8000, 4000, 2000]
@@ -12,8 +13,17 @@ def generate_quantization_variants(np_array):
 
 
 def generate_sampling_rate_variants(np_array):
-    return [(sampling_rate, quantize(np_array, sampling_rate))
+    return [(sampling_rate,
+             change_sampling_rate(np_array, BASE_SAMPLING_RATE, sampling_rate))
             for sampling_rate in SAMPLING_RATE_VARIANTS]
+
+
+def generate_compression_variants(np_array, sample_width):
+    return [
+        ('A-law', a_law_compress(np_array, sample_width)),
+        ('u-law', u_law_compress(np_array, sample_width)),
+        ('ADPCM', adpcm_compress(np_array, sample_width))
+    ]
 
 
 def quantize(np_array, num_bits):

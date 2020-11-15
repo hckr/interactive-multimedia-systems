@@ -7,10 +7,7 @@ from functools import reduce
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-
 from sklearn import linear_model
-from sklearn.metrics import mean_squared_error
-
 import scipy.signal as sig
 
 from helpers import first, second, unzip
