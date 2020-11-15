@@ -8,7 +8,7 @@ Cropped from [Voice Request #31 - Come on, chief.wav](https://freesound.org/peop
 
 ## [accoustic.wav](accoustic.wav)
 
-Cropped from [friendlyguitarsound_j008b.wav](https://freesound.org/people/j008b/sounds/84570/) by [j008b](https://freesound.org/people/j008b/)
+Denoised version of [friendlyguitarsound_j008b.wav](https://freesound.org/people/j008b/sounds/84570/) by [j008b](https://freesound.org/people/j008b/)
 
 ## [rock.wav](rock.wav)
 
