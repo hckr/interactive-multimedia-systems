@@ -8,30 +8,24 @@ def main():
         if not is_image(path):
             continue
         image = Image.open(path).convert('L')
-        image_array, _ = image_to_array(image)
+        image_array = np.array(image)
         image_rle_compressed = compressRLE(image_array)
+        assert np.array_equal(image_array, decompressRLE(image_rle_compressed))
         print(f'Image: {path}')
-        print(f'Original size: {len(image_array)}')
-        print(f'RLE size: {len(image_rle_compressed)}')
-        print(f'RLE decompression equal: {np.array_equal(image_array, decompressRLE(image_rle_compressed))}')
-        print(f'RLE compression ratio: {len(image_rle_compressed)/len(image_array)}')
+        print(f'Original size: {image_array.size}')
+        print(f'RLE size: {image_rle_compressed.size}')
+        print(f'RLE compression ratio: {image_rle_compressed.size / image_array.size}')
+        print()
 
 
 def is_image(path):
     return any(path.endswith(ext) for ext in ('.png', '.jpg'))
 
-def image_to_array(img):
-    arr = np.array(img)
-    _, width = arr.shape
-    return arr.flatten(), width
-
-
-def image_from_array(np_array, width):
-    return Image.fromarray(np_array.reshape(-1, width))
-
 
 def compressRLE(array):
-    result = []
+    _, width = array.shape
+    array = array.flatten()
+    result = [width]
     if (len(array) == 0):
         return result
     prev = array[0]
@@ -47,16 +41,17 @@ def compressRLE(array):
     else:
         result.append(count)
         result.append(prev)
-    return result
+    return np.array(result)
 
 
 def decompressRLE(compressed_data):
     result = []
-    it = iter(compressed_data)
+    width, *data = compressed_data
+    it = iter(data)
     for (count, p) in zip(it, it):
         for _ in range(count):
             result.append(p)
-    return result
+    return np.array(result).reshape(-1, width)
 
 
 def compressQuad(img):
