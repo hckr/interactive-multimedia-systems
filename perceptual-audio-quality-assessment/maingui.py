@@ -1,19 +1,19 @@
 import player
 from audiovariants import change_sampling_rate, quantize, a_law_compress, u_law_compress, adpcm_compress
 from audiovariants import QUANTIZATION_VARIANTS, SAMPLING_RATE_VARIANTS
-from matplotlib.figure import Figure
 from tkinter import *
 from tkinter.ttk import Separator
 from tkinter.messagebox import showinfo
 import os
 import json
+import matplotlib
 import matplotlib.pyplot as plt
 from glob import glob
 from audiomeasures import peak_signal_to_noise_ratio
 from loader import load_wav, SAMPLES_PATH, BASE_SAMPLING_RATE
 
 root = Tk()
-
+matplotlib.use('TkAgg')
 
 def main():
     root.title('Perceptual audio quality assessment')
